@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+           body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #008000;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #008000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background-color: #005500;
+        }
+
+        .links {
+            margin-top: 10px;
+        }
+
+        .links a {
+            color: #800080;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <!-- Form now submits to backend login.php -->
+        <form method="POST" action="login.php">
+            <label for="user-id">User ID</label>
+            <input type="text" id="user-id" name="username" placeholder="User ID" required>
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            
+            <button type="submit" class="login-button">Login</button>
+            
+            <div class="links">
+                <a href="Forgot User Name.html">Forgot User Name?</a> \ 
+                <a href="Forgot Password.html">Forgot Password?</a>
+                <br>
+                <a href="Registration.html">Register</a>
+            </div>
+        </form>
+        <div id="message" class="message">
+          
+        </div>
+    </div>
+</body>
+</html>

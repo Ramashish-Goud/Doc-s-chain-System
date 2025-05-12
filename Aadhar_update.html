@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aadhaar Enrolment/Correction Form</title>
+  <style>
+    /* General styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    form {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"],
+    input[type="file"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .form-section {
+      margin-bottom: 20px;
+    }
+
+    .form-section h2 {
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 5px;
+    }
+
+    /* Hide inactive sections */
+    #aadhaarSection,
+    #panSection,
+    #voterIdSection {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Document Enrolment/Correction/Update Form</h1>
+  </header>
+
+   <form id="multiDocumentForm" method="POST" action="aadhar_update.php" enctype="multipart/form-data">
+
+
+    <!-- Basic Details -->
+    <h2>Section 1: Basic Details</h2>
+    <label>
+      Resident Type:
+      <input type="radio" name="residentType" value="Resident" required> Resident
+      <input type="radio" name="residentType" value="NRI"> Non-Resident Indian (NRI)
+    </label>
+
+    <label for="preEnrolmentId">Pre-Enrolment ID (If applicable):</label>
+    <input type="text" id="preEnrolmentId" name="preEnrolmentId">
+
+    <label for="aadhaarNumber">Aadhaar Number (UID):</label>
+    <input type="text" id="aadhaarNumber" name="aadhaarNumber" maxlength="12" required placeholder="Enter Aadhaar Number">
+
+    <label>Fields to Update:</label>
+    <div>
+      <input type="checkbox" name="updateField" value="Biometric"> Biometric
+      <input type="checkbox" name="updateField" value="Mobile"> Mobile
+      <input type="checkbox" name="updateField" value="DOB"> Date of Birth
+      <input type="checkbox" name="updateField" value="Address"> Address
+      <input type="checkbox" name="updateField" value="Name"> Name
+      <input type="checkbox" name="updateField" value="Gender"> Gender
+      <input type="checkbox" name="updateField" value="Email"> Email
+    </div>
+
+    <!-- Personal Info -->
+    <h2>Section 2: Personal Information</h2>
+    <label for="fullName">Full Name:</label>
+    <input type="text" id="fullName" name="fullName" required>
+
+    <label>Gender:</label>
+    <div>
+      <input type="radio" name="gender" value="Male" required> Male
+      <input type="radio" name="gender" value="Female"> Female
+      <input type="radio" name="gender" value="Other"> Other
+    </div>
+
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob" required>
+
+    <label for="address">Address:</label>
+    <textarea id="address" name="address" rows="3" required></textarea>
+
+    <label for="mobile">Mobile Number:</label>
+    <input type="tel" id="mobile" name="mobile" maxlength="10" required placeholder="Enter Mobile Number">
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Enter Email Address">
+
+    <!-- Document Verification -->
+    <h2>Section 3: Document Verification</h2>
+    <label for="verificationType">Verification Type:</label>
+    <select id="verificationType" name="verificationType" required>
+      <option value="">Select Type</option>
+      <option value="Document Based">Document Based</option>
+      <option value="Introducer Based">Introducer Based</option>
+      <option value="Head of Family Based">Head of Family (HoF) Based</option>
+    </select>
+
+    <label for="poi">Proof of Identity (POI):</label>
+    <input type="file" id="poi" name="poi" required>
+
+    <label for="poa">Proof of Address (POA):</label>
+    <input type="file" id="poa" name="poa" required>
+
+    <!-- Document Selection -->
+   <!-- Section 4: Document Selection -->
+<div class="form-section">
+    <h2>Changes will be happend your all document</h2>
+  
+    <input type="checkbox" id="aadhaarUpdate" name="documentType" value="Aadhaar" checked disabled>
+    <label for="aadhaarUpdate">Update Aadhaar Card</label><br>
+  
+    <input type="checkbox" id="panUpdate" name="documentType" value="PAN" checked disabled>
+    <label for="panUpdate">Update PAN Card</label><br>
+
+    <input type="checkbox" id="panUpdate" name="documentType" value="PAN" checked disabled>
+    <label for="panUpdate">Diving licence</label><br>
+  
+    <input type="checkbox" id="voterIdUpdate" name="documentType" value="VoterID" checked disabled>
+    <label for="voterIdUpdate">Update Voter ID</label>
+  </div>
+  
+
+    <!-- Aadhaar Section -->
+    <div class="form-section" id="aadhaarSection">
+      <h2>Update Aadhaar Card</h2>
+      <label for="aadhaarNumber">Aadhaar Number:</label>
+      <input type="text" id="aadhaarNumber" maxlength="12" placeholder="Enter Aadhaar Number">
+    </div>
+
+    <!-- PAN Section -->
+    <div class="form-section" id="panSection">
+      <h2>Update PAN Card</h2>
+      <label for="panNumber">PAN Card Number:</label>
+      <input type="text" id="panNumber" maxlength="10" placeholder="ABCDE1234F" oninput="validatePanCard(this)">
+    </div>
+
+    <!-- Voter ID Section -->
+    <div class="form-section" id="voterIdSection">
+      <h2>Update Voter ID</h2>
+      <label for="voterIdNumber">Voter ID Number:</label>
+      <input type="text" id="voterIdNumber" placeholder="Enter Voter ID Number">
+    </div>
+
+    
+    <button type="submit" onclick="window.location.href='payment.html'">Submit </button>
+  </form>
+
+  <script>
+    // Handle section toggling
+    document.addEventListener("DOMContentLoaded", () => {
+      const aadhaarUpdate = document.getElementById('aadhaarUpdate');
+      const panUpdate = document.getElementById('panUpdate');
+      const voterIdUpdate = document.getElementById('voterIdUpdate');
+
+      const aadhaarSection = document.getElementById('aadhaarSection');
+      const panSection = document.getElementById('panSection');
+      const voterIdSection = document.getElementById('voterIdSection');
+
+      aadhaarUpdate.addEventListener('change', () => {
+        aadhaarSection.style.display = 'block';
+        panSection.style.display = 'none';
+        voterIdSection.style.display = 'none';
+      });
+
+      panUpdate.addEventListener('change', () => {
+        aadhaarSection.style.display = 'none';
+        panSection.style.display = 'block';
+        voterIdSection.style.display = 'none';
+      });
+
+      voterIdUpdate.addEventListener('change', () => {
+        aadhaarSection.style.display = 'none';
+        panSection.style.display = 'none';
+        voterIdSection.style.display = 'block';
+      });
+    });
+
+    // Validate PAN
+    function validatePanCard(input) {
+      input.value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (input.value.length > 10) {
+        input.value = input.value.substring(0, 10);
+      }
+      const panFormat = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+      if (!panFormat.test(input.value) && input.value.length === 10) {
+        alert('Invalid PAN Card format. Use 5 letters, 4 digits, 1 letter (e.g., ABCDE1234F)');
+        input.value = '';
+      }
+    }
+
+    // Validate form before submit
+    document.getElementById('aadhaarForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (document.getElementById('aadhaarUpdate').checked && document.getElementById('aadhaarNumber').value.trim() === '') {
+        alert('Please enter your Aadhaar number.');
+        return;
+      }
+
+      if (document.getElementById('panUpdate').checked) {
+        const panNumber = document.getElementById('panNumber').value.trim();
+        const panFormat = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+        if (!panFormat.test(panNumber)) {
+          alert('Invalid PAN Card format.');
+          return;
+        }
+      }
+
+      if (document.getElementById('voterIdUpdate').checked && document.getElementById('voterIdNumber').value.trim() === '') {
+        alert('Please enter your Voter ID number.');
+        return;
+      }
+
+      alert('Form submitted successfully!');
+    });
+  </script>
+</body>
+</html>
+  
+
+
+
+

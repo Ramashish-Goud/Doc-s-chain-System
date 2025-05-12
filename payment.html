@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UPI Payment - Maharashtra Services</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 400px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      color: #1e3a8a;
+    }
+
+    .amount {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #10b981;
+    }
+
+    .btn {
+      background-color: #3b82f6;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #2563eb;
+    }
+
+    .qr-box {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .qr-box img {
+      max-width: 220px;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+    }
+
+    .timer {
+      font-size: 14px;
+      color: #ef4444;
+      margin-top: 10px;
+    }
+
+    .txn-box {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .txn-box input {
+      padding: 8px;
+      font-size: 16px;
+      width: 80%;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Scan to Pay via UPI</h2>
+    <div class="amount">Amount to Pay: ₹100</div>
+    <button class="btn" onclick="showQR()">Show QR Code</button>
+
+    <div class="qr-box" id="qrBox">
+      <img src="success.jpg" alt="UPI QR Code" />
+      <div class="timer">QR Code expires in <span id="timer">300</span> seconds</div>
+      <div class="txn-box" id="txnBox">
+        <input type="text" id="txnInput" placeholder="Enter Transaction ID" />
+        <button class="btn" onclick="confirmPayment()">Confirm Payment</button>
+      </div>
+    </div>
+
+    <div class="status" id="statusMsg"></div>
+  </div>
+
+  <script>
+    let countdown;
+    let timeLeft = 300;
+  
+    window.onload = function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ticketID = urlParams.get('ticket_id');
+      if (ticketID) {
+        document.getElementById("showTicket").innerText = "Your Ticket ID: " + ticketID;
+      }
+    };
+  
+    function showQR() {
+      document.getElementById("qrBox").style.display = "block";
+      document.getElementById("txnBox").style.display = "block";
+      document.getElementById("statusMsg").textContent = "";
+      timeLeft = 300;
+      document.getElementById("timer").textContent = timeLeft;
+  
+      clearInterval(countdown);
+      countdown = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").textContent = timeLeft;
+  
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          document.getElementById("qrBox").style.display = "none";
+          alert("⛔ QR Code expired. Please try again.");
+        }
+      }, 1000);
+    }
+  
+    function confirmPayment() {
+      if (timeLeft <= 0) {
+        alert("⛔ Cannot confirm. QR Code has expired.");
+        return;
+      }
+  
+      const txnId = document.getElementById("txnInput").value.trim();
+      const status = document.getElementById("statusMsg");
+  
+      if (txnId === "") {
+        alert("⚠️ Please enter a Transaction ID.");
+        return;
+      }
+  
+      const trackingId = "TRACK" + Math.floor(100000 + Math.random() * 900000);
+  
+      // Send Tracking ID to backend
+      fetch("insert_payment.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `tracking_id=${encodeURIComponent(trackingId)}`
+      })
+      .then(res => res.text())
+      .then(response => {
+        status.innerHTML = `✅ Payment Confirmed!<br>Tracking ID: <strong>${trackingId}</strong><br>${response}`;
+        document.getElementById("txnBox").style.display = "none";
+        clearInterval(countdown);
+      })
+      .catch(err => {
+        status.innerHTML = "❌ Error saving payment.";
+        console.error(err);
+      });
+    }
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maharashtra Public Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s ease;
+            padding: 20px;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar img {
+            width: 70px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .sidebar h3 {
+            color: #f0f0f0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+        }
+
+        .header {
+            width: 100%;
+            background: #ffffff;
+            color: black;
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: padding-left 0.3s ease;
+        }
+
+        .header.shift {
+            padding-left: 270px;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left img {
+            width: 350px;
+            height: auto;
+        }
+	
+		.scroll {
+            width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(90deg, #f0f0f0, #ffffff);
+            border: 1px solid #007bff;
+            border-radius: 6px;
+            padding: 6px 5px;
+            box-shadow: 04px 6px rgba(0, 0, 0, 0.2);
+        }
+        .marquee {
+            color: #007bff;
+            font-size: 18px;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .scroll:hover .marquee {
+            color: #ff4500;
+            font-size: 19px;
+            transition: color 0.6s, font-size 0.6s ease-in-out;
+        }
+
+
+        .main-content {
+            margin-left: 0;
+            padding: 20px;
+            margin-top: 70px;
+            transition: margin-left 0.3s ease;
+            width: 100%;
+        }
+
+        .main-content.sidebar-open {
+            margin-left: 250px;
+        }
+
+        .services {
+            background-color: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .services h2 {
+            color: #1565c0;
+            margin-bottom: 20px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .service-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            color: #333;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-options {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f1f1f1;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        .activity {
+            margin-top: 30px;   
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity h3 {
+            color: #1565c0;
+        }
+
+        .activity-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .activity-item {
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Enhanced Payment and Download Section */
+        #pay-fees-section, #download-section {
+            display: none;
+            padding: 30px;
+            background-color: #e0f7fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            transition: opacity 0.3s ease;
+        }
+
+        #pay-fees-section h3, #download-section h3 {
+            color: #0288d1;
+            margin-bottom: 15px;
+        }
+
+        #pay-fees-section p, #download-section p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0277bd;
+        }
+
+        .download-btn {
+            padding: 15px 25px;
+            background-color: #1e88e5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .download-btn:hover {
+            background-color: #1565c0;
+        }
+
+        #download-section input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;   
+            font-size: 16px;
+        }
+
+        /* Edit button style */
+        .edit-btn {
+            padding: 10px 20px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .edit-btn:hover {
+            background-color: #f57c00;
+        }
+
+        /* Service options styling */
+        .service-options button { 
+            padding: 15px 30px;
+            background-color: #0288d1;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .service-options button:hover {
+            background-color: #0277bd;
+        }
+
+        .application-number-input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+
+
+        
+
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <!-- Display User Profile Picture and Name Dynamically -->
+        <img style="width: 50px; margin-left: 15px;" src="PROFILE.PNG">
+
+        <h3><?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Guest'; ?></h3>
+        <a href="#" id="home-link">Home</a>
+        <a href="#" id="services-link">Services</a>
+        
+        <a href="#" id="activities-link">Download</a>
+       
+        
+        <a href="index.html" id="logout-link">Logout</a> <!-- Changed from History to Logout -->
+    </div>
+    <div class="header" id="header">
+        <span class="menu-icon" id="menu-icon">&#9776;</span>
+        <div class="header-left">
+            <img src="logo.png" alt="Logo">
+        </div>
+    </div>
+ <div class="scroll">
+        <marquee class="marquee alertDesk" scrollamount="3" onmouseover="this.stop();" onmouseout="this.start();">
+            "Update Smart, Update Fast – All in One Place!"
+        </marquee>
+    </div>
+
+
+    <div class="main-content" id="main-content">
+        <div id="home-page" class="home-page">
+            <h2>Welcome to Doc's-chain Public Services</h2>
+            <p>Choose a service from the list below</p>
+        </div>
+
+        <div id="services-page" class="services">
+            <h2>Services Available Online</h2>
+            <div class="services-grid">
+                <div class="service-item" onclick="showOptions('aadhaar')">Aadhaar Card</div>
+                <div class="service-item" onclick="showOptions('voter')">Voter ID</div>
+                <div class="service-item" onclick="showOptions('income')">Income Certificate</div>
+                <div class="service-item" onclick="showOptions('domicile')">Domicile Certificate</div>
+            </div>
+        </div>
+
+        <!-- Service Options Section -->
+        <div class="service-options" id="aadhaar-options">
+            <h3>Aadhaar Services</h3>
+            <button onclick="addActivity('Aadhaar - Apply New'); window.location.href='Aadhar_new_apply.html';">Apply New Aadhaar</button>
+            <button onclick="addActivity('Aadhaar - Update'); window.location.href='Aadhar_update.html';">Update Aadhaar</button>
+            <button onclick="addActivity('Aadhaar - Update'); window.location.href='';">Check Status</button>
+        </div>
+        <div class="service-options" id="voter-options">
+            <h3>Voter ID Services</h3>
+            <button onclick="addActivity('Voter ID - Apply'); window.location.href='Voter_id_create.html';">Apply New Voter ID</button>
+            <button onclick="addActivity('Voter ID - Update'); window.location.href='Aadhar_update.html';">Update Voter Details</button>
+        </div>
+        <div class="service-options" id="income-options">
+            <h3>Income Certificate Services</h3>
+            <button onclick="addActivity('Income Certificate - Apply');window.location.href='income_certificate_apply.html'">Apply for Income Certificate</button>
+            <button onclick="addActivity('Income Certificate - Update');window.location.href='Aadhar_update.html'">Update Income Certificate</button>
+        </div>
+        <div class="service-options" id="domicile-options">
+            <h3>Domicile Certificate Services</h3>
+            <button onclick="addActivity('Domicile Certificate - Apply');window.location.href='Domicile_Certificate.html'">Apply for Domicile Certificate</button>
+            <button onclick="addActivity('Domicile Certificate - Update'); window.location.href='Aadhar_update.html';">Update Domicile Certificate</button>
+        </div>
+
+        <!-- Activity Section -->
+        <div class="activity" id="activity-section">
+            <h3>Activities</h3>
+            <ul class="activity-list" id="activity-list"></ul>
+        </div>
+
+        <!-- Payment Section -->
+        <!-- Check Status Section -->
+<div class="check-status-section" id="check-status-section">
+    <h3>Check Your Status</h3>
+    <p>Enter your Tracking ID to check the status of your document.</p>
+    <input type="text" id="tracking-id" placeholder="Enter Tracking ID">
+    <br>
+    <button onclick="checkStatus()">Check Status</button>
+    <p id="status-message"></p>
+  </div>
+  
+  <!-- Check Status Styles -->
+  <style>
+    .check-status-section {
+      margin-top: 30px;
+      text-align: center;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  
+    .check-status-section input {
+      padding: 10px;
+      width: 60%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+  
+    .check-status-section button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 15px;
+      background-color: #004aad;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  
+    .check-status-section button:hover {
+      background-color: #003377;
+    }
+  
+    #status-message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+  
+  <!-- Check Status Script -->
+  <script>
+    function checkStatus() {
+      const trackingId = document.getElementById('tracking-id').value.trim();
+      const statusMessage = document.getElementById('status-message');
+  
+      if (trackingId === "") {
+        alert("⚠️ Please enter a Tracking ID.");
+        return;
+      }
+  
+      // Call the backend to check status
+      fetch('check_status.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `tracking_id=${encodeURIComponent(trackingId)}`
+      })
+      .then(res => res.text())
+      .then(response => {
+        if (response === "found") {
+          statusMessage.innerHTML = "✅ Your response has been submitted. You can download your document soon.";
+          statusMessage.style.color = "green";
+        } else {
+          statusMessage.innerHTML = "❌ No record found for this Tracking ID.";
+          statusMessage.style.color = "red";
+        }
+      })
+      .catch(error => {
+        statusMessage.innerHTML = "❌ Error checking status.";
+        statusMessage.style.color = "red";
+        console.error("Error:", error);
+      });
+    }
+  </script>
+  
+
+
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Maharashtra Public Services | All Rights Reserved</p>
+    </div>
+
+    <script>
+        // Toggle sidebar
+        document.getElementById('menu-icon').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const header = document.getElementById('header');
+            sidebar.classList.toggle('open');
+            mainContent.classList.toggle('sidebar-open');
+            header.classList.toggle('shift');
+        });
+    
+        // Home page navigation
+        document.getElementById('home-link').addEventListener('click', function() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('services-page').style.display = 'none';
+            document.getElementById('pay-fees-section').style.display = 'none';
+            document.getElementById('download-section').style.display = 'none';
+            document.getElementById('activity-section').style.display = 'none';
+        });
+    
+        // Services page navigation
+        document.getElementById('services-link').addEventListener('click', function() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('services-page').style.display = 'block';
+            document.getElementById('pay-fees-section').style.display = 'none';
+            document.getElementById('download-section').style.display = 'none';
+            document.getElementById('activity-section').style.display = 'none';
+        });
+    
+        // Activity page navigation
+        document.getElementById('activities-link').addEventListener('click', function() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('services-page').style.display = 'none';
+            document.getElementById('pay-fees-section').style.display = 'none';
+            document.getElementById('download-section').style.display = 'none';
+            document.getElementById('activity-section').style.display = 'block';
+        });
+    
+        
+    
+            
+        // Logout page navigation
+        document.getElementById('logout-link').addEventListener('click', function() {
+            alert('Logging out...');
+        });
+    
+        function showOptions(service) {
+            const options = document.querySelectorAll('.service-options');
+            options.forEach(option => {
+                option.style.display = 'none';
+            });
+            document.getElementById(`${service}-options`).style.display = 'block';
+        }
+    
+        function addActivity(service) {
+            const activityList = document.getElementById('activity-list');
+            const newActivityItem = document.createElement('li');
+            newActivityItem.classList.add('activity-item');
+            newActivityItem.textContent = service;
+            activityList.appendChild(newActivityItem);
+        }
+    
+        // ✅ Updated payment function
+        function proceedToPayment() {
+            const appNumber = document.getElementById("payment-application-number").value.trim();
+            const statusMessage = document.getElementById("payment-status-message");
+    
+            if (appNumber === "") {
+                statusMessage.style.color = "red";
+                statusMessage.textContent = "⚠️ Please enter an application number.";
+                return;
+            }
+    
+            // AJAX call to backend
+            function proceedToPayment() {
+    // Get the application number from input field
+    const appNumber = document.getElementById("payment-application-number").value.trim();
+    const statusMessage = document.getElementById("payment-status-message");
+
+    // Validate if the application number is entered
+    if (appNumber === "") {
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "⚠️ Please enter an application number.";
+        return; // Exit the function if no application number is provided
+    }
+
+    // Clear the previous status message
+    statusMessage.textContent = "";
+
+    // Show loading message while waiting for the response
+    statusMessage.style.color = "blue";
+    statusMessage.textContent = "⏳ Checking payment status...";
+
+    // AJAX call to backend PHP to check the payment status
+    fetch("check_payment.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "application_number=" + encodeURIComponent(appNumber)
+    })
+    .then(response => {
+        // Check if the response is ok (status 200)
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.text(); // Parse the response body as text
+    })
+    .then(data => {
+        console.log("Backend Response:", data); // Log the response for debugging
+
+        // Based on the response, display appropriate status message
+        if (data === "paid") {
+            statusMessage.style.color = "green";
+            statusMessage.textContent = "✅ Payment confirmed for Application Number: " + appNumber;
+        } else if (data === "unpaid") {
+            statusMessage.style.color = "orange";
+            statusMessage.textContent = "❌ Payment is not yet completed for Application Number: " + appNumber;
+        } else if (data === "not_found") {
+            statusMessage.style.color = "red";
+            statusMessage.textContent = "⚠️ Application Number not found in the system.";
+        } else {
+            statusMessage.style.color = "red";
+            statusMessage.textContent = "⚠️ Unexpected error: " + data;
+        }
+    })
+    .catch(error => {
+        // Handle any errors that o ccur during the fetch request
+        statusMessage.style.color = "red";
+        statusMessage.textContent = "⚠️ Request failed: " + error;
+    });
+};
+
+        }
+    
+        function downloadDocument() {
+            const applicationNumber = document.getElementById('application-number').value;
+            if (applicationNumber) {
+                alert('Document downloaded successfully!');
+            } else {
+                alert('Please enter a valid application number.');
+            }
+        }
+    
+        function editForm(service) {
+            alert(`${service} form can now be edited.`);
+        }
+    </script>
+    
+</body>
+</html>

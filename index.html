@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aaple Sarkar Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header { 
+            background-color: #ffffff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        header img {
+            height: 130px;
+            width: auto;
+        }
+        header h1 {
+            color: #006400;
+            font-size: 40px;
+            margin: 0;
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .scroll {
+            width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(90deg, #f0f0f0, #ffffff);
+            border: 1px solid #007bff;
+            border-radius: 6px;
+            padding: 6px 5px;
+            box-shadow: 04px 6px rgba(0, 0, 0, 0.2);
+        }
+        .marquee {
+            color: #007bff;
+            font-size: 18px;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .scroll:hover .marquee {
+            color: #ff4500;
+            font-size: 19px;
+            transition: color 0.6s, font-size 0.6s ease-in-out;
+        }
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            margin: 20px;
+        }
+        .left-section {
+            width: 70%;
+            padding: 20px;
+            background-color: #e6f7ff;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+        .left-section h2 {
+            color: #006400;
+            margin-bottom: 15px;
+        }
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .service-item {
+            background-color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex: 1 1 calc(33% - 20px);
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+        }
+        .right-section {
+            width: 30%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .login-box {
+            margin-bottom: 20px;
+        }
+        .login-box h3 {
+            color: #006400;
+            margin-bottom: 10px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #006400;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        footer {
+            margin-top: 20px;
+            background-color: #f8f8f8;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+        .section {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #006400;
+        }
+        .modal-content button {
+            margin: 10px;
+            padding: 10px 15px;
+            background-color: #006400;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .modal-content .close-button {
+            background-color: red;
+        }
+        .modal-content button:hover {
+            opacity: 0.8;
+        }
+    </style>
+    <script>
+        // Function to handle clicking on a service item
+        function openService(serviceName) {
+            alert("Opening details for " + serviceName);
+            window.location.href = 'https://www.example.com/' + serviceName;
+        }
+
+        // Function to handle the login button click
+        function login() {
+            var userID = document.querySelector("#userID").value;
+            var password = document.querySelector("#password").value;
+            if (userID && password) {
+                alert("Login Successful");
+            } else {
+                alert("Please enter User ID and Password");
+            }
+        }
+
+        // Function to open the appropriate service modal
+        function openServiceModal(serviceName) {
+            if (serviceName === 'Aadhaar') {
+                document.getElementById('aadhaarModal').style.display = 'flex';
+            } else if (serviceName === 'Voter') {
+                document.getElementById('voterModal').style.display = 'flex';
+            } else if (serviceName === 'IncomeCertificate') {
+                document.getElementById('incomeCertificateModal').style.display = 'flex';
+            } else if (serviceName === 'Domicile') {
+                document.getElementById('domicileModal').style.display = 'flex';
+            }
+        }
+
+        // Function to close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Function to toggle visibility of sections
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+            var selectedSection = document.querySelector('#' + sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="logo.png" alt="Logo">
+            <h1>Maharashtra Right to Public Services</h1>
+        </div>
+        <nav>
+            <a href="javascript:void(0)" onclick="showSection('home')">Home</a>
+            <a href="javascript:void(0)" onclick="showSection('about')">About</a>
+            <a href="javascript:void(0)" onclick="showSection('services')">Services</a>
+            <a href="javascript:void(0)" onclick="showSection('contact')">Contact</a>
+        </nav>
+    </header>
+    <div class="scroll">
+        <marquee class="marquee alertDesk" scrollamount="3" onmouseover="this.stop();" onmouseout="this.start();">
+            "Update Smart, Update Fast – All in One Place!"
+        </marquee>
+    </div>
+
+    <div class="main-container">
+        <div class="left-section">
+            <div id="home" class="section active">
+                <h2>Welcome to Maharashtra Right to Public Services Portal</h2>
+                <p>Here, you can access various public services provided by the Maharashtra government.</p>
+            </div>
+
+            <div id="about" class="section">
+                <h2>About Us</h2>
+                <p>This portal is developed to provide citizens with easy access to public services like Aadhaar, Voter ID, and more.</p>
+            </div>
+
+            <div id="services" class="section">
+                <h2>Services Available Online</h2>
+                <div class="services">
+                    <div class="service-item" onclick="openServiceModal('Aadhaar')">Aadhaar Card</div>
+                    <div class="service-item" onclick="openServiceModal('Voter')">Voter ID</div>
+                    <div class="service-item" onclick="openServiceModal('IncomeCertificate')">Income Certificate</div>
+                    <div class="service-item" onclick="openServiceModal('Domicile')">Domicile Certificate</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-section">
+            <div class="login-box">
+                <h3>Login</h3>
+                <form method="POST" action="login.php">
+                    <input id="user-id" name="username" type="text" placeholder="User ID" minlength="5" maxlength="15" required>
+                    <input id="password" name="password" type="password" placeholder="Password" minlength="5" maxlength="15" required>
+                    <button type="submit">Login</button>
+                    <div id="message"></div>
+                </form>
+               
+                    <div id="message"></div>
+                </form>
+                <div class="forgot-links">
+                    <a href="Forgot User Name.html" onclick="openForgotUsername()">Forgot User Name?</a><br>
+                    <a href="Forgot Password.html" onclick="openForgotPassword()">Forgot Password?</a><br>
+                    <a href="Registration.html" onclick="register()">Register</a>
+                </div>
+            </div>
+    </div>
+</div>
+    <footer>
+        <p>&copy; 2025 Maharashtra Government. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Aadhaar Modal -->
+<div id="aadhaarModal" class="modal">
+    <div class="modal-content">
+        <h2>Aadhaar Card Services</h2>
+        <a href="long page5.html" target="_self">
+            <button>Apply for New Aadhaar</button>
+        </a>
+        <a href="long page5.html" target="_self">
+            <button>Update Aadhaar</button>
+        </a>
+        <a href="long page5.html" target="_self">
+            <button>Check Aadhaar Status</button>
+        </a>
+        <button class="close-button" onclick="closeModal('aadhaarModal')">Close</button>
+    </div>
+</div>
+
+<!-- Voter Modal -->
+<div id="voterModal" class="modal">
+    <div class="modal-content">
+        <h2>Voter ID Services</h2>
+        <a href="long page5.html" target="_self">
+            <button>Apply for New Voter ID</button>
+        </a>
+        <a href="long page5.html" target="_self">
+            <button>Update Voter ID</button>
+        </a>
+        <a href="long page5.html" target="_self">
+            <button>Check Voter ID Status</button>
+        </a>
+        <button class="close-button" onclick="closeModal('voterModal')">Close</button>
+    </div>
+</div>
+
+<!-- Income Certificate Modal -->
+<div id="incomeCertificateModal" class="modal">
+    <div class="modal-content">
+        <h2>Income Certificate Services</h2>
+        <a href="long page.html" target="_self">
+            <button>Apply for Income Certificate</button>
+        </a>
+        <a href="long page5.html" target="_self">
+            <button>Update Income Certificate</button>
+        </a>
+        <a href="long page5.html" target="_self">
+            <button>Check Income Certificate Status</button>
+        </a>
+        <button class="close-button" onclick="closeModal('incomeCertificateModal')">Close</button>
+    </div>
+</div>
+
+<!-- Domicile Certificate Modal -->
+<div id="domicileModal" class="modal">
+    <div class="modal-content">
+        <h2>Domicile Certificate Services</h2>
+        <a href="long page5.html" target="_self">
+            <button>Apply for Domicile Certificate</button>
+        </a>
+        <a href="long page5.html" target="_self">
+            <button>Update Domicile Certificate</button>
+        </a>
+        <a href="long page5.html" target="_self">
+            <button>Check Domicile Certificate Status</button>
+        </a>
+        <button class="close-button" onclick="closeModal('domicileModal')">Close</button>
+    </div>
+</div>
+
+    </div>
+</body>
+</html>
