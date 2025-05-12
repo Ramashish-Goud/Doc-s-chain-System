@@ -18,4 +18,4 @@ This platform helps users to update important government documents like Aadhaar,
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/ashish.git
+   git clone https://github.com/Ramashish-Goud/Doc-s-chain-System.git
